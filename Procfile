@@ -1,1 +1,1 @@
-web: gunicorn rc-api-inspector.py:app --log-file=-
+web: gunicorn rc-api-inspector:app --log-file=-
