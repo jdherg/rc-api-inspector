@@ -4,8 +4,8 @@ from flask import Flask, redirect, url_for, session, request, jsonify
 from flask_oauthlib.client import OAuth
 
 app = Flask(__name__)
+app.secret_key = os.environ.get('SESSIONS_KEY', None)
 oauth = OAuth(app)
-
 rc = oauth.remote_app(
     'recurse_center',
     access_token_method='POST',
@@ -52,3 +52,6 @@ def authorized():
 @rc.tokengetter
 def get_recurse_center_oauth_token():
     return session.get('recurse_token')
+
+if __name__ == '__main__':
+    app.run()
