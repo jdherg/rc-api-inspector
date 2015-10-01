@@ -32,7 +32,7 @@ def login():
 
 @app.route('/logout')
 def logout():
-    session.pop('recurse_token', None)
+    session.pop('rc_token', None)
     return redirect(url_for('index'))
 
 
@@ -44,14 +44,14 @@ def authorized():
             request.args['error'],
             request.args['error_description']
         )
-    session['recurse_token'] = (resp['access_token'], '')
+    session['rc_token'] = (resp['access_token'], '')
     user = rc.get('people/me')
     return jsonify(user.data)
 
 
 @rc.tokengetter
 def get_recurse_center_oauth_token():
-    return session.get('recurse_token')
+    return session.get('rc_token')
 
 if __name__ == '__main__':
     app.run()
