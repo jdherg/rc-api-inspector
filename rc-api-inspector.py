@@ -4,6 +4,7 @@ from flask import Flask, redirect, url_for, session, request, jsonify
 from flask_oauthlib.client import OAuth
 
 app = Flask(__name__)
+PROXY_BASE = os.environ.get('PROXY_BASE', None)
 app.secret_key = os.environ.get('SESSIONS_KEY', None)
 oauth = OAuth(app)
 rc = oauth.remote_app(
@@ -27,7 +28,10 @@ def index():
 
 @app.route('/login')
 def login():
-    return rc.authorize(callback=url_for('authorized', _external=True))
+    if PROXY_BASE is not None:
+        return rc.authorize(callback=PROXY_BASE + url_for('authorized'))
+    else:
+        return rc.authorize(callback=url_for('authorized', _external=True))
 
 
 @app.route('/logout')
