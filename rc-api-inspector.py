@@ -49,8 +49,7 @@ def authorized():
             request.args['error_description']
         )
     session['rc_token'] = (resp['access_token'], resp['refresh_token'])
-    user = rc.get('people/me')
-    return jsonify(user.data)
+    return redirect(url_for('index'))
 
 
 @rc.tokengetter
